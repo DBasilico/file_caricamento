@@ -1,0 +1,24 @@
+
+EXCEL_CONDIZIONI_CONTRATTUALI:
+LOAD commodity       as COMMODITY, 
+     tipologia       as TIPOLOGIA, 
+     fornitore_cons  as FORNITORE_CONS, 
+     fornitore_prev  as FORNITORE_PREV, 
+     delta_rif_em    as DELTA_RIF_EM, 
+     delta_em_scad   as DELTA_EM_SCAD
+FROM
+[FCF2_condizioni_contrattuali_20220701.xlsx]
+(ooxml, embedded labels, table is Sheet);
+
+
+
+
+tabella_insert:
+NoConcatenate
+load left(insert,len(insert)-1)&';' as insert
+;
+load 'insert into lab1_db.rfcf_condizioni_contrattuali  (COMMODITY, TIPOLOGIA, FORNITORE_CONS, FORNITORE_PREV, DELTA_RIF_EM, DELTA_EM_SCAD) values '&concat(insert)                                                          as insert
+;
+load
+     '('&chr(39)&COMMODITY&chr(39)&','&chr(39)&TIPOLOGIA&chr(39)&','&chr(39)&FORNITORE_CONS&chr(39)&','&chr(39)&FORNITORE_PREV&chr(39)&','&DELTA_RIF_EM&','&DELTA_EM_SCAD&'),' as insert
+resident EXCEL_CONDIZIONI_CONTRATTUALI;

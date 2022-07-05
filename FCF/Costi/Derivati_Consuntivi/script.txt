@@ -1,0 +1,27 @@
+EXCEL_DERIVATI:
+LOAD TIPOLOGIA, 
+     COMMODITY, 
+     FORNITORE, 
+     ANNOMESE_COMP, 
+     ANNOMESE_SCAD, 
+     IMPORTO
+FROM
+[FCF2 - Derivati IIfct.xlsx]
+(ooxml, embedded labels, table is Foglio1);
+
+
+
+
+tabella_insert:
+NoConcatenate
+load left(insert,len(insert)-1)&';' as insert
+;
+load 'insert into lab1_db.rfcf_derivati_cons (TIPOLOGIA, COMMODITY, FORNITORE, ANNOMESE_COMP, ANNOMESE_SCAD, IMPORTO) values '&concat(insert)                  as insert
+;
+load
+     '('&chr(39)&TIPOLOGIA&chr(39)&','&chr(39)&COMMODITY&chr(39)&','&chr(39)&FORNITORE&chr(39)&','&ANNOMESE_COMP&','&ANNOMESE_SCAD&','&IMPORTO&'),' as insert
+resident EXCEL_DERIVATI;
+
+
+
+Drop table EXCEL_DERIVATI;

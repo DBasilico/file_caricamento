@@ -1,0 +1,15 @@
+﻿Flusso;Campo;Codifica;mantieni_mancanti;default_mancanti
+clcri_testata_bolletta;TIPO_REGIME;TipoRegime;True;
+clcri_testata_bolletta;COD_SIST_PROV;SistemaFatturazione;True;
+clcri_sotto_testata;COD_SIST_PROV;SistemaFatturazione;True;
+clcri_sotto_testata;COMMODITY;Commodity;False;LAVORI
+clcri_dettaglio_fattura;COD_SIST_PROV;SistemaFatturazione;True;
+clcri_dettaglio_fattura;COMMODITY;Commodity;False;LAVORI
+clcri_forn_br;RANK_STATI;RankStatiBR;True;
+clcri_forn_br;STATO_FORNITURA;StatoPraticaBR;True;
+clcri_forn_crm;RANK_STATI;RankStatiCRM;True;
+clcri_forn_crm;ASSET_STATUS;StatoPraticaCRM;True;
+clcri_forn_crm;TIP_PROD;CommodityCRM;True;
+clcri_forn_crm;TIP_REG_COMMTY;TipoRegimeCRM;True;
+clcri_blocchi_fatturazione;COD_SIST_PROV;SistemaFatturazione;True;
+clcri_attributi_forn_crm;FLG_BOLLETTA_PIATTA;BollettaPiatta;True;

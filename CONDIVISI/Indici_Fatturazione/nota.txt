@@ -1,0 +1,1 @@
+vanno entrambi i flussi sulla stessa tabella, in append, l'unica differenza è che se leggi dalla cartella Consuntivo la colonna TIPO è uguale a 'CONS', se è la cartella Forecast la colonna tipo è uguale a 'FW'

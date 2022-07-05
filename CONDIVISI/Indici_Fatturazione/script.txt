@@ -1,0 +1,126 @@
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='#.##0,00 €;-#.##0,00 €';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='it-IT';
+SET MonthNames='gen;feb;mar;apr;mag;giu;lug;ago;set;ott;nov;dic';
+SET LongMonthNames='gennaio;febbraio;marzo;aprile;maggio;giugno;luglio;agosto;settembre;ottobre;novembre;dicembre';
+SET DayNames='lun;mar;mer;gio;ven;sab;dom';
+SET LongDayNames='lunedì;martedì;mercoledì;giovedì;venerdì;sabato;domenica';
+
+let carattere_iesimo = chr(176);
+let path = '$(PATH)';
+let ID_RUN_CONS = '$(id_run_cons)';
+let NOME_FILE = '$(nome_file)';
+let NOME_SHEET = '$(nome_sheet)';
+let ANNO = '$(anno_indici)';
+let TIPOLOGIA = '$(tipologia)';
+
+// Nomenclatura Tabelle Input e Output
+let Tabella = 'INDICI_FATTURAZIONE_XE';
+
+Map_Commodity:
+Mapping
+LOAD * Inline [
+COMMODITY_VAR,COMMODITY_TCR
+Gas, GAS
+Power, PWR
+Power e Gas, GAS-PWR
+Gas e Power, GAS-PWR
+];
+
+// Si è stabilito che gli indici vanno arrotondati a 3 cifre decimali, tranne il PFORt a 6
+Map_Arrotondamenti:
+Mapping
+LOAD 'PFORt' as INDICE,
+	 0.000001 as ARROTONDAMENTO
+AutoGenerate (1);
+
+$(Tabella)_TMP:
+CrossTable(DATA, VALORE, 14)
+LOAD '$(TIPOLOGIA)'								as TIPO,
+	 Applymap('Map_Commodity',Commodity,'ND')	as COMMODITY, 
+     Trim(Settore)								as SETTORE, 
+     [Dettaglio Settore]						as DETTAGLIO_SETTORE, 
+     Fascia										as FASCIA, 
+     PANIERE									as PANIERE, 
+     Cod.Paniere								as COD_PANIERE, 
+     Cod.PDF									as COD_PDF, 
+     [VARIABILE NETA BR]						as VARIABILI_NETA_BR,
+     [VARIABILE XE]								as VARIABILI_XE,
+     Descrizione								as DESCRIZIONE, 
+     Note										as NOTE, 
+     Nome										as NOME, 
+     Data 										AS UDM,
+     *
+FROM
+[$(path)$(NOME_FILE).xlsx]
+(ooxml, embedded labels, table is '$(NOME_SHEET)', filters(
+Transpose()
+));
+
+$(Tabella):
+NoConcatenate
+LOAD TIPO,
+	 COMMODITY,
+	 FASCIA,
+	 VARIABILI_XE,
+	 Round(VALORE, ApplyMap('Map_Arrotondamenti', VARIABILI_XE, 0.001 ) )	      as VALORE,
+	 DATA,
+	 ANNOMESE,
+	 UDM
+;
+LOAD TIPO,
+	 subfield(COMMODITY,'-')				 as COMMODITY,
+	 FASCIA,
+	 trim(subfield(VARIABILI_XE,','))		 as VARIABILI_XE,
+	 VALORE,
+	 date(subfield(DATA,'.',1),'yyyy-MM-dd') as DATA,
+	 year(date(subfield(DATA,'.',1)))&num(month(date(subfield(DATA,'.',1))),'00') as ANNOMESE,
+	 UDM
+Resident $(Tabella)_TMP
+where not (VARIABILI_XE = '' or isnull(VARIABILI_XE) )
+	  and not (VALORE = '' or isnull(VALORE) )
+	  and Year(subfield(DATA,'.',1))=$(ANNO) 
+	  and not match(VARIABILI_XE,'ITEC_SN','ITEC12_SN') // ITEC riferito ai seminegoziati va ricalcolato partendo dalla versione non seminegoziata / 1000
+;
+
+drop table $(Tabella)_TMP;
+
+// Ricalcolo ITEC riferito ai seminegoziati
+Concatenate($(Tabella))
+LOAD TIPO,
+	 COMMODITY,
+	 FASCIA,
+	 VARIABILI_XE&'_SN'						 as VARIABILI_XE,
+	 VALORE/1000      						 as VALORE,
+	 DATA,
+	 ANNOMESE,
+	 UDM
+Resident $(Tabella)
+where match(VARIABILI_XE,'ITEC','ITEC12') 
+;
+
+outer join($(Tabella))
+LOAD '$(ID_RUN_CONS)' as ID_RUN_CONS
+Autogenerate(1);
+
+tabella_insert:
+NoConcatenate
+load left(insert,len(insert)-1)&';' as insert
+;
+load 'insert into lab1_db.rfcf_tariffario_xe_indici_fatturazione (TIPO, COMMODITY, FASCIA, VARIABILI_XE, VALORE, DATA_INDICI, ANNOMESE, UDM ) values'&concat(insert)                                                          as insert
+;
+load
+     '('&chr(39)&TIPO&chr(39)&','&chr(39)&COMMODITY&chr(39)&','&chr(39)&FASCIA&chr(39)&','&chr(39)&VARIABILI_XE&chr(39)&', cast('&chr(39)&replace(VALORE, ',', '.')&chr(39)&' as DOUBLE), '&chr(39)&DATA&chr(39)&','&chr(39)&ANNOMESE&chr(39)&','&chr(39)&UDM&chr(39)&'),' as insert
+resident $(Tabella);
+
+drop table $(Tabella);

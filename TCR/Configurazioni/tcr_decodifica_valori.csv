@@ -1,0 +1,237 @@
+Nome_Decodifica;Commodity;ID;Valore_TCR
+AttributoFasciaRataFissa;CROSS;EE;Contributo_Mensile_Relax_Luce
+AttributoFasciaRataFissa;CROSS;GAS;Contributo_Mensile_Relax_Gas
+ClusterForniture;GAS;A;1
+ClusterForniture;GAS;B;1
+ClusterForniture;GAS;C;1
+ClusterForniture;GAS;D;1
+ClusterForniture;GAS;E;1
+ClusterForniture;GAS;F;1
+ClusterForniture;GAS;G;1
+ClusterForniture;GAS;H;1
+ClusterForniture;GAS;I;1
+ClusterForniture;GAS;J;1
+ClusterForniture;GAS;K;1
+ClusterForniture;GAS;L;1
+ClusterForniture;GAS;M;1
+ClusterForniture;GAS;N;1
+ClusterForniture;GAS;O;1
+ClusterForniture;GAS;P;1
+ClusterForniture;GAS;Q;1
+ClusterForniture;GAS;R;1
+ClusterForniture;GAS;S;1
+ClusterForniture;GAS;T;1
+ClusterForniture;GAS;U;3
+ClusterForniture;GAS;V;3
+ClusterForniture;GAS;W;3
+ClusterForniture;GAS;X;2
+ClusterForniture;GAS;Y;2
+ClusterForniture;GAS;Z;2
+ClusterForniture;GAS;0;1
+ClusterForniture;GAS;1;2
+ClusterForniture;GAS;2;3
+ClusterForniture;GAS;3;3
+ClusterForniture;GAS;4;3
+ClusterForniture;GAS;5;3
+ClusterForniture;GAS;6;3
+ClusterForniture;GAS;7;2
+ClusterForniture;GAS;8;2
+ClusterForniture;GAS;9;3
+ClusterForniture;EE;0;0
+ClusterForniture;EE;1;0
+ClusterForniture;EE;2;0
+ClusterForniture;EE;3;0
+ClusterForniture;EE;4;0
+ClusterForniture;EE;5;0
+ClusterForniture;EE;6;0
+ClusterForniture;EE;7;0
+ClusterForniture;EE;8;0
+ClusterForniture;EE;9;0
+ClusterForniture;EE;A;0
+ClusterForniture;EE;B;0
+ClusterForniture;EE;C;0
+ClusterForniture;EE;D;0
+ClusterForniture;EE;E;0
+ClusterForniture;EE;F;0
+ClusterForniture;EE;G;0
+ClusterForniture;EE;H;0
+ClusterForniture;EE;I;1
+ClusterForniture;EE;J;1
+ClusterForniture;EE;K;1
+ClusterForniture;EE;L;1
+ClusterForniture;EE;M;1
+ClusterForniture;EE;N;1
+ClusterForniture;EE;O;1
+ClusterForniture;EE;P;1
+ClusterForniture;EE;Q;1
+ClusterForniture;EE;R;1
+ClusterForniture;EE;S;1
+ClusterForniture;EE;T;1
+ClusterForniture;EE;U;1
+ClusterForniture;EE;V;1
+ClusterForniture;EE;W;1
+ClusterForniture;EE;X;1
+ClusterForniture;EE;Y;1
+ClusterForniture;EE;Z;1
+Commodity;CROSS;ENERGIA ELETTRICA;EE
+Commodity;CROSS;GAS METANO;GAS
+CommodityCRM;CROSS;Prodotto Commodity Luce;EE
+CommodityCRM;CROSS;Prodotto Commodity Gas;GAS
+CommodityFatturato;CROSS;ENERGIA ELETTRICA;EE
+CommodityFatturato;CROSS;Energia Elettrica;EE
+CommodityFatturato;CROSS;GAS NATURALE;GAS
+CommodityFatturato;CROSS;GAS METANO;GAS
+ComponentiBloccoTerremotati;CROSS;DISTV;43708
+ComponentiBloccoTerremotati;CROSS;DISTV_ALL;43708
+ComponentiBloccoTerremotati;CROSS;DISTF;43708
+ComponentiBloccoTerremotati;CROSS;DISTF_ALL;43708
+ComponentiBloccoTerremotati;CROSS;LAVO;43708
+ComponentiRettificaBILMAT;CROSS;TRASPV;Y
+ComponentiRettificaBILMAT;CROSS;TRASPV_ALL;Y
+ComponentiRettificaBILMAT;CROSS;VENDV;Y
+ComponentiSaldo;CROSS;LAVO;1
+ComponentiSaldo;CROSS;BSO;1
+ComponentiSaldo;CROSS;SCON_UT;3
+Mercato;CROSS;Y;Libero
+Mercato;CROSS;N;Tutelato
+PerditaAllocato;CROSS;2016;0,0266
+PerditaAllocato;CROSS;2017;0,0266
+PerditaAllocato;CROSS;2018;0,0266
+PerditaAllocato;CROSS;2019;0,0266
+PerditaAllocato;CROSS;2020;0,0266
+PerditaAllocato;CROSS;2021;0,0266
+PerditaAllocato;CROSS;2022;0,0266
+PerditaAllocato;CROSS;2023;0,0266
+PerditaAllocato;CROSS;2024;0,0266
+PeriodiRataFissa;CROSS;INIZIO_SIMULAZIONE_CONGUAGLIO;6
+PeriodiRataFissa;CROSS;MESI_CONGUAGLIO_NETA;12
+ProfiloDefault;CROSS;001X1#NETA BM;DEFAULT#NETA BM
+ProfiloDefault;CROSS;T1X1#NETA BR;DEFAULT#NETA BR
+ProfitRegime;CROSS;Regolato;Tutelato
+ProfitRegime;CROSS;Libero Standard;Libero standard
+ProfitRegime;CROSS;Libero a tariffa regolata;Libero a tariffa regolata
+ProfitRegime;CROSS;Libero semi-negoziato;Seminegoziato
+ProfitRegime;CROSS;Libero Negoziato;Negoziato
+ProfitRegime;CROSS;FUI;Fornitura di ultima istanza
+ProfitRegime;CROSS;DEFAULT;Default
+ProfitRegime;CROSS;Regolato Altri Usi;Tutelato
+ProfitRegime;CROSS;Libero Standard (o regolata like);Libero standard
+ProfitRegime;CROSS;Libero Altri Usi;Libero standard
+ProfitSegmento;CROSS;Residenziale;RESIDENZIALI
+ProfitSegmento;CROSS;Microbusiness;MICROBUSINESS
+ProfitSegmento;CROSS;Condomini;CONDOMINIO
+ProfitSegmento;CROSS;PA;PUBBLICA AMMINISTRAZIONE
+ProfitSegmento;CROSS;Imprese;IMPRESE
+ProfitSegmento;CROSS;Multisito;MULTISITO
+ProfitSegmento;CROSS;Autotrazione;AUTOTRAZIONE
+ProfitUtilizzo;CROSS;DOM;DOMESTICO
+ProfitUtilizzo;CROSS;ALTRI_USI;ALTRI USI
+ProfitUtilizzo;CROSS;ALTRI_USI / ILL_PUB;ALTRI USI
+ProfitUtilizzo;CROSS;ALTRI_USI / ILL_PUB;ILLUMINAZIONE PUBBLICA
+ProfitUtilizzo;CROSS;NG_DOMESTICO;DOMESTICO
+ProfitUtilizzo;CROSS;NG_DOMESTICO;PRIVATO
+ProfitUtilizzo;CROSS;NG_DOMESTICO;RESIDENZIALE
+ProfitUtilizzo;CROSS;NG_ALTRI_USI;ALTRI USI
+ProfitUtilizzo;CROSS;NG_ALTRI_USI;GESTIONE CALORE
+ProfitUtilizzo;CROSS;NG_ALTRI_USI;GESTORE CALORE
+ProfitUtilizzo;CROSS;NG_CONDOMINIO;CONDOMINIO
+ProfitUtilizzo;CROSS;NG_ALTRI_USI / NG_SERV_PUB;SERVIZIO PUBBLICO
+ProfitUtilizzo;CROSS;NG_ALTRI_USI / NG_SERV_PUB;Servizio Pubblico
+ProfitUtilizzo;CROSS;NG_ALTRI_USI / NG_SERV_PUB;ALTRI USI
+ProfitUtilizzo;CROSS;NG_ALTRI_USI / NG_SERV_PUB;GESTIONE CALORE
+ProfitUtilizzo;CROSS;NG_ALTRI_USI / NG_SERV_PUB;GESTORE CALORE
+ProfitUtilizzo;CROSS;;RIPARAZIONE DI BENI PERSONALI E PER LA CASA
+ProfitUtilizzo;CROSS;NG_SERV_PUB;SERVIZIO PUBBLICO
+ProfitUtilizzo;CROSS;NG_SERV_PUB;Servizio Pubblico
+ProfitUtilizzo;CROSS;NG_SERV_PRIV;SERVIZIO PRIVATO
+RankStatiCRM;CROSS;Suspended;0
+RankStatiCRM;CROSS;Pending Cancellation;2
+RankStatiCRM;CROSS;Cancelled;1
+RankStatiCRM;CROSS;Activated;2
+RankStatiCRM;CROSS;Pending Activation;2
+RankStatiBR;CROSS;ANNULLATO;0
+RankStatiBR;CROSS;CESSATA FATTURATA;1
+RankStatiBR;CROSS;IN CORSO DI CESSAZIONE;2
+RankStatiBR;CROSS;CESSATA DA FATTURARE;1
+RankStatiBR;CROSS;CESSATA COMMERCIALMENTE;1
+RankStatiBR;CROSS;SOSPESA;0
+RankStatiBR;CROSS;ATTIVATA;2
+RankStatiBR;CROSS;ATTIVA COMMERCIALMENTE;2
+RankStatiBR;CROSS;DA ATTIVARE;2
+SaldoAcconto;CROSS;STORNO_ACCONTO;AC
+SaldoAccontoDesc;CROSS;SA;Saldo
+SaldoAccontoDesc;CROSS;AC;Acconto
+SaldoAccontoDesc;CROSS;BILMATERIA;Bil. Materia
+SaldoAccontoTipLettura;CROSS;STORNO_ANNULL#M;AC
+SaldoAccontoTipLettura;CROSS;STORNO_ANNULLA#M;AC
+SegnoAllocato;CROSS;CSN;+
+SegnoAllocato;CROSS;L51;-
+SegnoAllocato;CROSS;L52;-
+SegnoAllocato;CROSS;L56;-
+SegnoAllocato;CROSS;A51;+
+SegnoAllocato;CROSS;A52;+
+SegnoAllocato;CROSS;C51;+
+SegnoAllocato;CROSS;C52;+
+SegnoAllocato;CROSS;C54;+
+SegnoAllocato;CROSS;P52;+
+SegnoAllocato;CROSS;R52;+
+SistemaFatturazione;CROSS;3;NETA BR
+StatoLettura;CROSS;FORZATA;S
+StatoLettura;CROSS;VALIDATO;S
+StatoLettura;CROSS;INV. AUTOMATICA DA RETTIFICA;N
+StatoLettura;CROSS;INVALIDA;N
+StatoLettura;CROSS;SCARTATA PROOF;N
+StatoLettura;CROSS;RIPRIST. SCARTATA PROOF;N
+StatoLettura;CROSS;INVALIDA PER NON RETTIFICABILITA;N
+StatoLettura;CROSS;RETTIFICA SCARTATA;N
+StatoLettura;CROSS;RETTIFICA RIPRISTINABILE ;N
+StatoLettura;CROSS;INVALIDA PER TRACCIAMENTO;N
+StatoLettura;CROSS;INVALIDAZIONE RETROATTIVA;N
+StatoLettura;CROSS;INVALIDATA UTENTE;N
+StatoLettura;CROSS;SCARTATA;N
+StatoLettura;CROSS;RIPRIST. SCARTATA;N
+StatoLettura;CROSS;INVALIDAZIONE DA RICALCOLO;N
+StatoLettura;CROSS;VALIDA;S
+StatoLettura;CROSS;N;N
+StatoLettura;CROSS;S;S
+StatoLettura;CROSS;ACQUISITA;N
+StatoLettura;CROSS;MANCATA;N
+StatoLettura;CROSS;ANNULLATO;N
+StatoLettura;CROSS;FATTURATA;S
+StatoLettura;CROSS;RETTIFICA VERIFICATA;S
+StatoPraticaCRM;CROSS;Suspended;ANNULLATO
+StatoPraticaCRM;CROSS;Pending Cancellation;ATTIVO
+StatoPraticaCRM;CROSS;Cancelled;CESSATO
+StatoPraticaCRM;CROSS;Activated;ATTIVO
+StatoPraticaCRM;CROSS;Pending Activation;ATTIVO
+StatoPraticaBR;CROSS;ANNULLATO;ANNULLATO
+StatoPraticaBR;CROSS;CESSATA FATTURATA;CESSATO
+StatoPraticaBR;CROSS;IN CORSO DI CESSAZIONE;ATTIVO
+StatoPraticaBR;CROSS;CESSATA DA FATTURARE;CESSATO
+StatoPraticaBR;CROSS;CESSATA COMMERCIALMENTE;CESSATO
+StatoPraticaBR;CROSS;SOSPESA;ANNULLATO
+StatoPraticaBR;CROSS;ATTIVATA;ATTIVO
+StatoPraticaBR;CROSS;ATTIVA COMMERCIALMENTE;ATTIVO
+StatoPraticaBR;CROSS;DA ATTIVARE;ATTIVO
+TipoRegime;CROSS;ULTIMA ISTANZA;Fornitura di ultima istanza
+TipoRegime;CROSS;LIBERO SEMINEGOZIATO;Seminegoziato
+TipoRegime;CROSS;LIBERO NEGOZIATO;Negoziato
+TipoRegime;CROSS;Libero a tariffa standard;Libero standard
+TipoRegime;CROSS;LIBERO A TARIFFA REGOLATA;Libero a tariffa regolata
+TipoRegime;CROSS;MAGGIOR TUTELA;Tutelato
+TipoRegime;CROSS;DEFAULT;Default
+TipoRegimeCRM;CROSS;;
+TipoRegimeCRM;CROSS;;
+TipoRegimeCRM;CROSS;;
+TipoRegimeCRM;CROSS;;
+TipoRegimeCRM;CROSS;;
+TipoRegimeCRM;CROSS;;
+TipoRegimeCRM;CROSS;;
+VociBusinessFasceRataFissa;CROSS;CONTRIBUTO MENSILE RELAX 1;1- light
+VociBusinessFasceRataFissa;CROSS;CONTRIBUTO MENSILE RELAX 2;2- regular
+VociBusinessFasceRataFissa;CROSS;CONTRIBUTO MENSILE RELAX 3;3- plus
+VociBusinessFasceRataFissa;CROSS;CONTRIBUTO MENSILE RELAX 4;4- extra
+VociBusinessFasceRataFissa;CROSS;CONTRIBUTO MENSILE RELAX 5;5- max
+BollettaPiatta;CROSS;0;N
+BollettaPiatta;CROSS;1;Y
+StatoPraticaContrattoCRM;CROSS;;

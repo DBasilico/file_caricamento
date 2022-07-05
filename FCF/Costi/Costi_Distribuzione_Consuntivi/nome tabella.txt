@@ -1,0 +1,3 @@
+lab1_db.rfcf_costi_distribuzione_consuntivi
+
+vanno in append il power e il gas sulla stessa tabella

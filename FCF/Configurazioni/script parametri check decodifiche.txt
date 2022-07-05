@@ -1,0 +1,27 @@
+
+EXCEL_PARAM_CHECK_DECODIFICHE:
+LOAD nome_tabella_controllata                        as NOME_TABELLA_CONTROLLATA, 
+     nome_colonna_controllata                        as NOME_COLONNA_CONTROLLATA, 
+     query_controllata                               as QUERY_CONTROLLATA, 
+     nome_tabella_decodifica                         as NOME_TABELLA_DECODIFICA, 
+     nome_colonna_decodifica                         as NOME_COLONNA_DECODIFICA, 
+     replace(query_decodifica,chr(39),'\'&chr(39))   as QUERY_DECODIFICA
+FROM
+[fcf2_paramentri_check_decodifiche.xlsx]
+(ooxml, embedded labels, table is Sheet);
+
+
+
+tabella_insert:
+NoConcatenate
+load left(insert,len(insert)-1)&';' as insert
+;
+load 'insert into lab1_db.rfcf_parametri_check_decodifiche (NOME_TABELLA_CONTROLLATA,NOME_COLONNA_CONTROLLATA,QUERY_CONTROLLATA,NOME_TABELLA_DECODIFICA,NOME_COLONNA_DECODIFICA,QUERY_DECODIFICA) values '&concat(insert)                  as insert
+;
+load
+     '('&chr(39)&NOME_TABELLA_CONTROLLATA&chr(39)&','&chr(39)&NOME_COLONNA_CONTROLLATA&chr(39)&','&QUERY_CONTROLLATA&','&chr(39)&NOME_TABELLA_DECODIFICA&chr(39)&','&chr(39)&NOME_COLONNA_DECODIFICA&chr(39)&','&chr(39)&QUERY_DECODIFICA&chr(39)&'),' as insert
+resident EXCEL_PARAM_CHECK_DECODIFICHE;
+
+
+
+Drop table EXCEL_PARAM_CHECK_DECODIFICHE;

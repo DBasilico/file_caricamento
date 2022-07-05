@@ -1,0 +1,21 @@
+tab:
+LOAD sist_fat, 
+     tipo, 
+     id, 
+     valore,
+     descrizione
+FROM
+[lab1_db.rfcf_decodifiche_cash_flow.xlsx]
+(ooxml, embedded labels, table is Sheet);
+
+tabella_insert:
+NoConcatenate
+load left(insert,len(insert)-1)&';' as insert
+;
+load 'insert into lab1_db.rfcf_decodifiche_cash_flow (sist_fat, tipo, id, valore,descrizione) values '&concat(insert)                                                          as insert
+;
+load
+     '('&chr(39)&sist_fat&chr(39)&','&chr(39)&tipo&chr(39)&','&chr(39)&id&chr(39)&','&chr(39)&valore&chr(39)&','&chr(39)&descrizione&chr(39)&'),' as insert
+resident tab;
+
+DROP table tab;
