@@ -1,0 +1,34 @@
+EXCEL_DATE_XE
+LOAD replace(SETTIMANA,chr(176),'')   as SETTIMANA, 
+     COMMODITY, 
+     Date([43831],'YYYY-MM-DD')&' '&'000000.0'    as GENNAIO, 
+     Date([43862],'YYYY-MM-DD')&' '&'000000.0'    as FEBBRAIO, 
+     Date([43891],'YYYY-MM-DD')&' '&'000000.0'    as MARZO, 
+     Date([43922],'YYYY-MM-DD')&' '&'000000.0'    as APRILE, 
+     Date([43952],'YYYY-MM-DD')&' '&'000000.0'    as MAGGIO, 
+     Date([43983],'YYYY-MM-DD')&' '&'000000.0'    as GIUGNO, 
+     Date([44013],'YYYY-MM-DD')&' '&'000000.0'    as LUGLIO, 
+     Date([44044],'YYYY-MM-DD')&' '&'000000.0'    as AGOSTO, 
+     Date([44075],'YYYY-MM-DD')&' '&'000000.0'    as SETTEMBRE, 
+     Date([44105],'YYYY-MM-DD')&' '&'000000.0'    as OTTOBRE, 
+     Date([44136],'YYYY-MM-DD')&' '&'000000.0'    as NOVEMBRE, 
+     Date([44166],'YYYY-MM-DD')&' '&'000000.0'    as DICEMBRE
+FROM
+[CUsersipaolDesktopRFCFFCF1WorkInsert_qvwCalendario XE_Irene.xlsx]
+(ooxml, embedded labels, table is Foglio1);
+
+
+
+tabella_insert
+NoConcatenate
+load left(insert,len(insert)-1)&';' as insert
+;
+load 'insert into lab1_db.rfcf_calendario_xe_date (SETTIMANA,COMMODITY,GENNAIO,FEBBRAIO,MARZO,APRILE,MAGGIO,GIUGNO,LUGLIO,AGOSTO,SETTEMBRE,OTTOBRE,NOVEMBRE,DICEMBRE) values '&concat(insert)                                                          as insert
+;
+load
+     '('&chr(39)&SETTIMANA&chr(39)&','&chr(39)&COMMODITY&chr(39)&','&chr(39)&GENNAIO&chr(39)&','&chr(39)&FEBBRAIO&chr(39)&','&chr(39)&MARZO&chr(39)&','&chr(39)&APRILE&chr(39)&','&chr(39)&MAGGIO&chr(39)&','&chr(39)&GIUGNO&chr(39)&','&chr(39)&LUGLIO&chr(39)&','&chr(39)&AGOSTO&chr(39)&','&chr(39)&SETTEMBRE&chr(39)&','&chr(39)&OTTOBRE&chr(39)&','&chr(39)&NOVEMBRE&chr(39)&','&chr(39)&DICEMBRE&chr(39)&'),' as insert
+resident EXCEL_DATE_XE;
+
+
+
+Drop table EXCEL_DATE_XE;

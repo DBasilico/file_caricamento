@@ -1,0 +1,254 @@
+/ Nomenclatura Tabelle Input e Output
+let Tabella = 'DECODIFICHE';
+
+$(Tabella):
+LOAD 'REGIONE_AMBITO'         as TIPO,
+     [Codice Regione]         as ID, 
+     [Denominazione regione]  as ID_2,
+     [Id Ambito]              as VALORE,
+     [Cod Ambito]             as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is AMBITO)
+where not isnull([Id Ambito]);
+Concatenate($(Tabella))
+Load  distinct
+     'AMBITO_DESCRIZIONE'     as TIPO,
+     [Id Ambito]              as ID, 
+     [Cod Ambito]             as ID_2,
+     [Descrizione Ambito]     as VALORE,
+     null()                   as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is AMBITO)
+where not isnull([Id Ambito]);
+Concatenate($(Tabella))
+LOAD 'REGIONE_OSSERVATORIO' as TIPO,
+     [Codice Regione]       as ID, 
+     [Denominazione regione]as ID_2,
+     Osservatorio           as VALORE,
+     null()                 as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is AMBITO)
+where not isnull(Osservatorio);
+Concatenate($(Tabella))
+LOAD 'COMMODITY'         as TIPO,
+     Sistema             as ID, 
+     [Valore Origine]    as ID_2, 
+     [Valore TCR]        as VALORE,
+     null()              as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is COMMODITY);
+Concatenate($(Tabella))
+LOAD 'SALDO_ACCONTO'         as TIPO,
+     CODICE_CAUSALE          as ID, 
+     null()                  as ID_2,
+     SALDO_ACCONTO           as VALORE,
+     null()                  as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is SALDO_ACCONTO)
+where not isnull(CODICE_CAUSALE);
+Concatenate($(Tabella))
+LOAD 'SALDO_ACCONTO_TL'            as TIPO,
+     CAUSALI_TIPOLOGIA_LETTURA     as ID, 
+     TIPOLOGIA_LETTURA             as ID_2, 
+     SALDO_ACCONTO_TL              as VALORE,
+     null()                        as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is SALDO_ACCONTO);
+Concatenate($(Tabella))
+LOAD 'SISTEMI'            as TIPO,
+     [Valore Numerico]    as ID,
+     [Valore CRM]         as ID_2, 
+     [Valore Stringa]     as VALORE, 
+     [Valore TCR]         as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is SISTEMI);
+Concatenate($(Tabella))
+LOAD 'TIPOLOGIE_LETTURE'      as TIPO,
+     CAMPO_PROVENIENZA        as ID, 
+     TIPOLOGIA_LETTURA        as ID_2, 
+     VALIDITA_LETTURA         as VALORE,
+     null()                   as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is TIPOLOGIE_LETTURE)
+where not isnull(VALIDITA_LETTURA);
+Concatenate($(Tabella))
+LOAD 'VALIDITA_TIPO_LOGICO_LETT'   as TIPO,
+     DSC_TIPO_LOGICO_LETT          as ID,
+     null()                        as ID_2, 
+     VALIDITA_TIPO_LOGICO          as VALORE,
+     null()                        as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is TIPOLOGIE_LETTURE);
+Concatenate($(Tabella))
+LOAD 'STATO_LETTURE'          as TIPO,
+     METERING                 as ID,
+     STATO_LETTURA            as ID_2, 
+     VALIDITA_LETTURA         as VALORE, 
+     null()                   as VALORE_2
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is STATO_LETTURE);
+Concatenate($(Tabella))
+LOAD 'DESCRIZIONI_TCR'          as TIPO,
+     Tipo                       as ID, 
+     ID                         as ID_2, 
+     VALORE                     as VALORE, 
+     null()                     as VALORE_2   
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is DESCRIZIONI);
+Concatenate($(Tabella))
+LOAD 'DECODIFICHE_TARIFFARIO_BR'          as TIPO,
+     TIPO                                 as ID,  
+     VALORE_NETA                          as ID_2, 
+     VALORE_TCR                           as VALORE,  
+     CONVERSIONE                          as VALORE_2
+FROM
+[$(path)Codifiche_Tariffario.xlsx]
+(ooxml, embedded labels, table is DecodificaValori);
+Concatenate($(Tabella))
+LOAD 'COMUNI_PROVINCE'          as TIPO,
+     CODICE_ISTAT_ALFANUMERICO  as ID, 
+     replace(COMUNE,chr(39),' ')as ID_2, 
+     COD_PROVINCIA              as VALORE, 
+     SIGLA_PROVINCIA            as VALORE_2
+FROM
+[$(path)EST_Elenco_Comuni_$(ID_RUN).qvd]
+(qvd);
+Concatenate($(Tabella))
+LOAD distinct 
+     'PROVINCE_REGIONI'                 as TIPO,
+     COD_PROVINCIA                      as ID, 
+     replace(PROVINCIA,chr(39),' ')     as ID_2, 
+     COD_REGIONE                        as VALORE, 
+     replace(REGIONE,chr(39),' ')       as VALORE_2
+FROM
+[$(path)EST_Elenco_Comuni_$(ID_RUN).qvd]
+(qvd);
+Concatenate($(Tabella))
+LOAD distinct 
+     'MERCATO_XE'                 		as TIPO,
+     [Valore Origine]                   as ID, 
+     null()                             as ID_2, 
+     [Valore TCR]                       as VALORE, 
+     null()                             as VALORE_2
+FROM
+[$(path)Decodifiche XE.xlsx]
+(ooxml, embedded labels, table is MERCATO);
+Concatenate($(Tabella))
+LOAD distinct 
+     'TIPO_REGIME_XE'                 	as TIPO,
+     [Valore Origine]                   as ID, 
+     null()                             as ID_2, 
+     [Valore TCR]                       as VALORE, 
+     null()                             as VALORE_2
+FROM
+[$(path)Decodifiche XE.xlsx]
+(ooxml, embedded labels, table is TIPO_REGIME);
+
+consumi:
+NoConcatenate
+LOAD CONTO_COGE
+FROM
+[$(path)Decodifiche.xlsx]
+(ooxml, embedded labels, table is CONSUMI);
+inner join(consumi)
+LOAD VOCE_FATTURABILE_COD, 
+     CONTO_COGE
+FROM
+[$(path)Voci-Conti.csv]
+(txt, codepage is 1252, embedded labels, delimiter is ';', msq) 
+where SubStringCount(upper(VOCE_FATTURABILE_COD),'ADD')=0;
+
+Concatenate($(Tabella))
+LOAD distinct 
+     'VOCI_CONSUMO'                     as TIPO,
+     VOCE_FATTURABILE_COD               as ID, 
+     null()                             as ID_2, 
+     'CONSUMO'                          as VALORE, 
+     null()                             as VALORE_2
+resident consumi;
+
+Drop Table consumi;
+
+consumi_xe:
+NoConcatenate
+//LOAD CONTO_COGE
+//FROM
+//[$(path)Decodifiche XE.xlsx]
+//(ooxml, embedded labels, table is CONSUMI);
+//inner join(consumi_xe)
+//LOAD [Codice Articolo] as VOCE_FATTURABILE_COD, 
+//     [Conto CoGe]        as CONTO_COGE
+//FROM
+//[$(path)Voci-Conti-XE.xlsx]
+//(ooxml, embedded labels, table is Foglio1);
+LOAD Commodity&'#'&TipoListino&'#'&Listino as CHIAVE, 
+     Articolo							   as CODICE_VOCE
+FROM
+[$(path)Accise.xlsx]
+(ooxml, embedded labels, table is Sheet2);
+
+Concatenate($(Tabella))
+LOAD distinct 
+     'VOCI_CONSUMO_XE'                  as TIPO,
+     CODICE_VOCE               			as ID, 
+     CHIAVE                             as ID_2, 
+     'CONSUMO'                          as VALORE, 
+     null()                             as VALORE_2
+resident consumi_xe;
+
+Drop Table consumi_xe;
+
+Concatenate($(Tabella))
+LOAD  
+     'SALDO_ACCONTO_XE'                 as TIPO,
+     [Valore Origine]                   as ID, 
+     null()                             as ID_2, 
+     [Valore TCR]                        as VALORE, 
+     null()                             as VALORE_2
+FROM
+[$(path)Decodifiche XE.xlsx]
+(ooxml, embedded labels, table is MODALITA_FATTURAZIONE)
+where Sistema = 'XE';
+
+Concatenate($(Tabella))
+LOAD  
+     'TAR_XE_ESCLUSIONI'                as TIPO,
+     coditem                   			as ID, 
+     null()                             as ID_2, 
+     pricelistdescription          		as VALORE, 
+     null()                             as VALORE_2
+FROM
+[$(path)Decodifiche XE.xlsx]
+(ooxml, embedded labels, table is TARIFFARIO_ESCLUSIONI)
+where not ( isnull(coditem) or coditem = '' ) ;
+
+Concatenate($(Tabella))
+LOAD 'TIPO_UTILIZZO' 					as TIPO,
+	 Sistema&'#'&[Codice Profilo]		as ID, 
+     null()                             as ID_2, 
+     [Descrizione profilo]				as VALORE, 
+     null()                             as VALORE_2
+FROM
+[$(path)Configurazione profili NETA.xls]
+(biff, embedded labels, table is Sheet1$);
+Concatenate($(Tabella))
+LOAD 'TIPO_UTILIZZO' 					as TIPO,
+	 [Codice Profilo]					as ID, 
+     null()                             as ID_2, 
+     [Descrizione profilo]				as VALORE, 
+     null()                             as VALORE_2
+FROM
+[$(path)Configurazione profili XE.xls]
+(biff, embedded labels, table is Sheet1$);
+

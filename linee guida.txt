@@ -1,0 +1,15 @@
+Job più file da acquisire (potenzialmente uno per FCF - TCR e CRV)
+
+file comuni (esempio decodifiche) devono poter essere aggiornate da più di un job (es decodifiche in comune tra TCR e FCF)
+
+1 - incollo file nella cartella giusta
+2 - lancio un job che controlla se i file che ho sono più recenti dell'ultima volta --> serve una tabellina con nome tabella - nome file - data ultimo aggiornamento
+3 - acquisisco solo i file aggiornati
+	- sempre in append aggiungendo data ultimo aggiornamento
+	- se si resce aggiungere un flag_ultimo_record_valido = 1 per tutti i record con data ultimo aggiornamento più nuova, 0 altrimenti --> se possibile
+4 - aggiorno la tabellina con nome tabella - file - data ultimo aggiornamento
+
+
+quando accedi ai file dobbiamo fare sempre come oggi con la data snapshot
+
+

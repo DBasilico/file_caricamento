@@ -1,0 +1,100 @@
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='#.##0,00 €;-#.##0,00 €';
+SET TimeFormat='hhmmss';
+SET DateFormat='DDMMYYYY';
+SET TimestampFormat='DDMMYYYY hhmmss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='it-IT';
+SET MonthNames='gen;feb;mar;apr;mag;giu;lug;ago;set;ott;nov;dic';
+SET LongMonthNames='gennaio;febbraio;marzo;aprile;maggio;giugno;luglio;agosto;settembre;ottobre;novembre;dicembre';
+SET DayNames='lun;mar;mer;gio;ven;sab;dom';
+SET LongDayNames='lunedì;martedì;mercoledì;giovedì;venerdì;sabato;domenica';
+
+let carattere_iesimo = chr(176);
+let path = '$(PATH)';
+let ID_RUN_FW = '$(id_run_fw)';
+
+ Nomenclatura Tabelle Input e Output
+let Tabella = 'CODIFICHE_TARIFFARIO';
+
+$(Tabella)
+LOAD 'TIPO_CODIFICA'     as FOGLIO,
+     SIST_FAT, 
+     COMMODITY, 
+     TOG_VALORE, 
+     TipoCodifca         as TIPO_CODIFICA, 
+     CampoCodifica       as CAMPO_TCR_SRC,
+     null()              as VALORE_TCR,
+     CampoCodifica       as CAMPO_TCR_DEST,
+     null()              as ASSE_VALORE,
+     null()              as ASSE_DESCRIZIONE
+FROM
+[$(path)Codifiche_Tariffario.xlsx]
+(ooxml, embedded labels, table is TipoCodifica);
+concatenate($(Tabella))
+LOAD 'VALORI_CODIFICA'        as FOGLIO,
+     SIST_FAT, 
+     COMMODITY, 
+     TOG_VALORE,
+     'Valori'                 as TIPO_CODIFICA, 
+     CAMPO_TCR_SRC, 
+     ValoreTCR                as VALORE_TCR,
+     CAMPO_TCR_DEST,
+     ValoreAsse               as ASSE_VALORE, 
+     TOG_DESCRIZIONE          as ASSE_DESCRIZIONE scritto male in decodifiche tcr, è la descrizione asse!
+FROM
+[$(path)Codifiche_Tariffario.xlsx]
+(ooxml, embedded labels, table is ValoriCodifica);
+concatenate($(Tabella))
+LOAD 'CAMPI_CODIFICA'     as FOGLIO,
+     SIST_FAT, 
+     COMMODITY, 
+     TOG_VALORE, 
+     'Campi'             as TIPO_CODIFICA, 
+     null()              as CAMPO_TCR_SRC,
+     FORMULA_TCR         as VALORE_TCR,
+     CAMPO_TCR_DEST,
+     ValoreAsse          as ASSE_VALORE, 
+     DESCRIZIONE         as ASSE_DESCRIZIONE
+FROM
+[$(path)Codifiche_Tariffario.xlsx]
+(ooxml, embedded labels, table is CampiCodifica);
+
+outer join($(Tabella))
+LOAD '$(ID_RUN_FW)' as ID_RUN
+Autogenerate(1);
+
+tmp
+NoConcatenate
+load FOGLIO,
+     SIST_FAT, 
+     COMMODITY, 
+     TOG_VALORE, 
+     TIPO_CODIFICA, 
+     CAMPO_TCR_SRC,
+     replace(VALORE_TCR,chr(39),''&chr(39)) as VALORE_TCR,
+     CAMPO_TCR_DEST,
+     replace(ASSE_VALORE,chr(39),''&chr(39))     as ASSE_VALORE, 
+     replace(ASSE_DESCRIZIONE,chr(39),''&chr(39)) as ASSE_DESCRIZIONE,
+     ID_RUN
+resident $(Tabella);
+
+tabella_insert
+NoConcatenate
+load left(insert,len(insert)-1)&';' as insert
+;
+load 'insert into lab1_db.rfcf_codifiche_tariffario(FOGLIO, SIST_FAT, COMMODITY, TOG_VALORE, TIPO_CODIFICA, CAMPO_TCR_SRC, VALORE_TCR, CAMPO_TCR_DEST, ASSE_VALORE, ASSE_DESCRIZIONE) values '&concat(insert)                                                          as insert
+;
+load
+'('&chr(39)&FOGLIO&chr(39)&','&chr(39)&SIST_FAT&chr(39)&','&chr(39)&COMMODITY&chr(39)&','&chr(39)&TOG_VALORE&chr(39)&','&chr(39)&TIPO_CODIFICA&chr(39)&','&chr(39)&CAMPO_TCR_SRC&chr(39)&','&chr(39)&VALORE_TCR&chr(39)&','&chr(39)&CAMPO_TCR_DEST&chr(39)&','&chr(39)&ASSE_VALORE&chr(39)&','&chr(39)&ASSE_DESCRIZIONE &chr(39)&'),' as insert
+resident tmp;
+drop table tmp;
+
+
+drop table $(Tabella);
