@@ -7,6 +7,27 @@ from copy import deepcopy
 from delta.tables import DeltaTable
 
 
+def file_ultima_modifica(dirToCheck, lista_di_file=None):
+    ret_file = None
+    max_ts = datetime.datetime.min
+    if lista_di_file is not None and len(lista_di_file)>0:
+        for f in lista_di_file:
+            fileToCheck = os.path.join(dirToCheck,f)
+            ts = datetime.datetime.fromtimestamp(os.path.getmtime(fileToCheck))
+            print(f'{f} --> {ts}')
+            if ts>max_ts:
+                ret_file = f
+    else:
+        for base, _, file in os.walk(dirToCheck):
+            for f in file:
+                fileToCheck = os.path.join(dirToCheck,f)
+                ts = datetime.datetime.fromtimestamp(os.path.getmtime(fileToCheck))
+                print(f'{f} --> {ts}')
+                if ts>max_ts:
+                    ret_file = f
+    return ret_file
+
+  
 def last_update_folder(dirToCheck, lista_di_file=None):
     # lista di file senza percorso cartella base
     tss = list()
@@ -32,7 +53,7 @@ def utc_to_local(utc_dt):
     return local_tz.normalize(local_dt)
 
 
-def storicizza_input(spark, output_table, base_path, schema_tabella, crea_tabella, **args):
+def storicizza_input(spark, output_table, base_path, schema_tabella, crea_tabella, updCheckFiles=None, **crea_tabella_args):
     campiStoricizzazione = ['files_last_modify', 'files_last_modify_UTC', 'data_elaborazione', 'flag_ultimo_record_valido']
     if not spark.catalog._jcatalog.tableExists(output_table):
         print('Tabella non trovata --> CREATA TABELLA')
@@ -43,7 +64,8 @@ def storicizza_input(spark, output_table, base_path, schema_tabella, crea_tabell
             .write.mode('overwrite').format('delta').saveAsTable(output_table)
 
     df = spark.table(output_table).cache()
-    last_modify_files = last_update_folder(base_path)
+    last_modify_files = last_update_folder(dirToCheck=base_path,
+                                           lista_di_file=updCheckFiles)
 
     if df.count() > 0:
         if df.filter(f.col(campiStoricizzazione[3]) == 'Y').select(campiStoricizzazione[1]).distinct().count() == 1:
@@ -58,7 +80,7 @@ def storicizza_input(spark, output_table, base_path, schema_tabella, crea_tabell
             print(f'Ultima modifica files: {last_modify_files}')
             DeltaTable.forName(spark, output_table).update(condition=f"{campiStoricizzazione[3]}=='Y'",
                                                            set={f'{campiStoricizzazione[3]}': "'N'"})
-            df_tab_creata = crea_tabella(spark, **args)
+            df_tab_creata = crea_tabella(spark, schema_tabella=schema_tabella, base_path=base_path, **crea_tabella_args)
             df_tab_creata = df_tab_creata.withColumn(campiStoricizzazione[0], f.lit(utc_to_local(last_modify_files).strftime('%Y-%m-%d %H:%M:%S')))
             df_tab_creata = df_tab_creata.withColumn(campiStoricizzazione[1], f.lit(last_modify_files.strftime('%Y-%m-%d %H:%M:%S')))
             df_tab_creata = df_tab_creata.withColumn(campiStoricizzazione[2], f.lit(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
@@ -70,7 +92,7 @@ def storicizza_input(spark, output_table, base_path, schema_tabella, crea_tabell
             print(f'Ultima modifica files: {last_modify_files}')
     else:
         print('Tabella vuolta --> APPESA TABELLA')
-        df_tab_creata = crea_tabella(spark, **args)
+        df_tab_creata = crea_tabella(spark, schema_tabella=schema_tabella, base_path=base_path, **crea_tabella_args)
         df_tab_creata = df_tab_creata.withColumn(campiStoricizzazione[0], f.lit(utc_to_local(last_modify_files).strftime('%Y-%m-%d %H:%M:%S')))
         df_tab_creata = df_tab_creata.withColumn(campiStoricizzazione[1], f.lit(last_modify_files.strftime('%Y-%m-%d %H:%M:%S')))
         df_tab_creata = df_tab_creata.withColumn(campiStoricizzazione[2], f.lit(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
