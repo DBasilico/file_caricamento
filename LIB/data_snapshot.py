@@ -77,7 +77,6 @@ def calcolo_snapshot_storico(spark, par, df_tabelle, tab_snapshot_name, schema_s
       
       
 def snapshot(spark, par, tab_snapshot_name):
-    file_path = '/Workspace/Repos/davide.basilico@external.eniplenitude.com/file_caricamento/CONDIVISI/Configurazioni/Snapshot.xlsx'
     flusso = par.flusso
     if flusso not in ['rfcf_fatturato','rfcf_cashflow','crv','tariffario_xe']:
         raise Exception('flusso: valore non valido')
@@ -129,4 +128,46 @@ def elimina_storicizzazione(spark, flusso):
         storico_tab_name = df_tabelle.loc[idx, 'nome_tabella_storico']
         spark.sql(f'DROP TABLE IF EXISTS {storico_tab_name}')
         print(f'Tabella {storico_tab_name} eliminata')
-       
+
+
+class ds:
+    def __init__(self, spark, par):
+        flusso = par.flusso
+        self.data_riferimento = par.data_run_inizio if pd.isna(par.data_forzatura_storico) else par.data_forzatura_storico
+        
+        df_sn = spark.table(par.tab_snapshot_name)\
+                     .filter(f.col('id_run')==par.id_run)\
+                     .toPandas()
+        self.sns = df_sn.set_index('nome_tabella')['data_snapshot']
+
+        df_tabelle = spark.table('data.tcr_configurazione_storico_snapshot')\
+                            .filter(f.col('flag_ultimo_record_valido')=='Y')\
+                            .filter(f.col('flusso').like(f'%{flusso}%')).toPandas()
+        df_tabelle['nome_tabella_completo'] = df_tabelle['database']+'.'+df_tabelle['nome_tabella']
+        self.tabs = df_tabelle.set_index('nome_tabella_completo')
+        
+    
+    def table(self, spark, nome):
+        tab = self.tabs.loc[nome]
+        
+        if tab['tipo_storicizzazione'] == 'start_end':
+            df = spark.table(nome)
+            df = df.filter( (f.col('dat_startDate')<self.data_riferimento)&(f.col('dat_endDate')>=self.data_riferimento) )
+            return df
+        
+        elif tab['tipo_storicizzazione'] == 'snapshot':
+            df = spark.table(nome)
+            sn_name = tab['campo_snapshot']
+            sn = self.sns[nome]
+            df = df.filter(f.col(sn_name)==sn)
+            return df
+
+        elif tab['tipo_storicizzazione'] == 'no_storico':
+            storico_name = tab['nome_tabella_storico']
+            df = spark.table(storico_name)
+            sn = self.sns[nome]
+            df = df.filter(f.col('data_storico')==sn)
+            return df
+        
+        else:
+            raise Exception(f"Campo {tab['tipo_storicizzazione']} non accettato")
