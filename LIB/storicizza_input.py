@@ -102,7 +102,7 @@ def storicizza_input(spark, output_table, base_path, schema_tabella, crea_tabell
         df_tab_creata.write.mode('append').format('delta').saveAsTable(output_table)
 
 
-def controlli(spark, df_new_name, df_old_name):
+def controlli(spark, df_new_name, df_old_name, col_controllo):
     df_old = spark.table(df_old_name)
     df_new = spark.table(df_new_name)
     col_to_check = df_old.columns.copy()
@@ -110,15 +110,26 @@ def controlli(spark, df_new_name, df_old_name):
     df_old = df_old.select(*[f.col(x).alias(f'{x.upper()}_OLD') for x in df_old.columns])
     df_new = df_new.select(*[f.col(x).alias(f'{x.upper()}_NEW') for x in df_new.columns])
     
+    
+    for nome,formato in df_new.dtypes:
+      if formato == 'double':
+        df_new = df_new.withColumn(nome, f.round(f.col(nome),3))
+    for nome,formato in df_old.dtypes:
+      if formato == 'double':
+        df_old = df_old.withColumn(nome, f.round(f.col(nome),3))    
+    
+    
     conds = list()
     for c in col_to_check:
         conds.append(  (df_new[f'{c}_NEW'] == df_old[f'{c}_OLD']) | ((df_new[f'{c}_NEW'].isNull())&( df_old[f'{c}_OLD'].isNull()))      )
     
-    col_controllo = 'tipo'
+    df_check = df_new.join(df_old, on=conds, how='full')
     
     conds = ((f.col(f'{col_controllo}_NEW').isNull()) & ~(f.col(f'{col_controllo}_OLD').isNull())) | (~(f.col(f'{col_controllo}_NEW').isNull()) & (f.col(f'{col_controllo}_OLD').isNull()))
     
-    df_check = df_new.join(df_old, on=conds, how='full').filter(conds)
+    df_check = df_check.filter(conds)
     
     print(f'Righe non allineate: {df_check.count()}')
-    df_check.display()
+    return df_check    
+    
+    
